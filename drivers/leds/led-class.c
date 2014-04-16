@@ -75,7 +75,7 @@ static ssize_t led_brightness_store(struct device *dev,
 		ret = count;
 
 		if (state == LED_OFF)
-			led_trigger_remove(led_cdev);
+			led_trigger_set_default(led_cdev);
 		led_set_brightness(led_cdev, state);
 	}
 
@@ -449,13 +449,13 @@ static DEVICE_ATTR(onoff_patterns, 0644, confirm_onoff_pattern, make_onoff_patte
 
 int led_pattern_sysfs_register(void)
 {
-	struct class *lg_rgb;
+	struct class *g2_rgb;
 	struct device *pattern_sysfs_dev;
-	lg_rgb = class_create(THIS_MODULE, "lg_rgb_led");
-	if (IS_ERR(lg_rgb)) {
-		printk("Failed to create class(lg_rgb_led)!\n");
+	g2_rgb = class_create(THIS_MODULE, "g2_rgb_led");
+	if (IS_ERR(g2_rgb)) {
+		printk("Failed to create class(g2_rgb_led)!\n");
 	}
-	pattern_sysfs_dev = device_create(lg_rgb, NULL, 0, NULL, "use_patterns");
+	pattern_sysfs_dev = device_create(g2_rgb, NULL, 0, NULL, "use_patterns");
 	if (IS_ERR(pattern_sysfs_dev))
 		return PTR_ERR(pattern_sysfs_dev);
 
