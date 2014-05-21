@@ -745,18 +745,6 @@ static u8 sdhci_calc_timeout(struct sdhci_host *host, struct mmc_command *cmd)
 	 */
 	if (host->quirks & SDHCI_QUIRK_BROKEN_TIMEOUT_VAL)
 		return 0xE;
-#ifndef CONFIG_MACH_LGE
-	/* LGE_UPDATE, 2013/12/10, G2-KK-FS@lge.com */
-	/* QCT Case : 01383733 TD: 135796/OFFICIAL EVENT */
-	/* we agree that below code is not appied */
-	/* Hardware Interrupt occurs, since Data Timeout is longer than hadware interrupt time */
-
-	/* During initialization, don't use max timeout as the clock is slow */
-	if ((host->quirks2 & SDHCI_QUIRK2_USE_RESERVED_MAX_TIMEOUT) &&
-		(host->clock > 400000)) {
-		return 0xF;
-	}
-#endif
 	/* Unspecified timeout, assume max */
 	if (!data && !cmd->cmd_timeout_ms)
 		return 0xE;
